@@ -38,3 +38,107 @@
                 alert('Thank you for your interest in Godrej Urban Greens! Our sales team will contact you shortly.');
             });
         });
+        document.addEventListener('DOMContentLoaded', function() {
+    const notifyForm = document.getElementById('notifyForm');
+    const notifyInput = document.querySelector('.notify-input');
+    const notifyBtn = document.querySelector('.notify-btn');
+
+    // Form submission handler
+    notifyForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Validate email
+        const email = notifyInput.value.trim();
+        if (!isValidEmail(email)) {
+            showError('Please enter a valid email address');
+            return;
+        }
+
+        // Disable button during submission
+        notifyBtn.disabled = true;
+        notifyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> SENDING...';
+
+        // Simulate form submission (replace with actual AJAX call)
+        setTimeout(() => {
+            // Here you would typically make an AJAX request to your server
+            // For demonstration, we'll simulate a successful submission
+            simulateSubmission(email);
+        }, 1500);
+    });
+
+    // Email validation function
+    function isValidEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
+    // Show error message
+    function showError(message) {
+        // Remove any existing error messages
+        const existingError = document.querySelector('.error-message');
+        if (existingError) {
+            existingError.remove();
+        }
+
+        // Create and display error message
+        const errorElement = document.createElement('div');
+        errorElement.className = 'error-message';
+        errorElement.style.color = '#ff6b6b';
+        errorElement.style.marginTop = '8px';
+        errorElement.style.fontSize = '0.9rem';
+        errorElement.textContent = message;
+        
+        notifyForm.appendChild(errorElement);
+        
+        // Add error class to input
+        notifyInput.classList.add('error');
+        setTimeout(() => {
+            notifyInput.classList.remove('error');
+        }, 2000);
+    }
+
+    // Simulate form submission (replace with actual AJAX call)
+    function simulateSubmission(email) {
+        console.log('Form submitted with email:', email); // For testing
+        
+        // Show success message
+        const existingError = document.querySelector('.error-message');
+        if (existingError) {
+            existingError.remove();
+        }
+
+        const successElement = document.createElement('div');
+        successElement.className = 'success-message';
+        successElement.style.color = '#2a9d8f';
+        successElement.style.marginTop = '8px';
+        successElement.style.fontSize = '0.9rem';
+        successElement.style.fontWeight = '600';
+        successElement.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! We\'ll notify you when we launch.';
+        notifyForm.appendChild(successElement);
+
+        // Reset form
+        notifyInput.value = '';
+        notifyBtn.disabled = false;
+        notifyBtn.innerHTML = '<i class="fas fa-bell"></i> NOTIFY ME';
+
+        // Remove success message after 5 seconds
+        setTimeout(() => {
+            successElement.remove();
+        }, 5000);
+    }
+
+    // Add CSS for error state
+    const style = document.createElement('style');
+    style.textContent = `
+        .notify-input.error {
+            border-color: #ff6b6b !important;
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+    `;
+    document.head.appendChild(style);
+});
